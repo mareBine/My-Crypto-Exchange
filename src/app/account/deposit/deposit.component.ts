@@ -21,10 +21,12 @@ export class DepositComponent implements OnInit {
 
   deposit(): void {
     // api klic za deposit
-    this.bankingService.depositAmount({
-      timestamp: Date.now(),
-      amount: this.type === 'deposit' ? this.amount : -this.amount      // deposit ali withdraw
-    }).subscribe(this.afterDeposit());
+    if (this.amount > 0) {
+      this.bankingService.depositAmount({
+        timestamp: Date.now(),
+        amount: this.type === 'deposit' ? this.amount : -this.amount      // deposit ali withdraw
+      }).subscribe(this.afterDeposit());
+    }
   }
 
   afterDeposit(): any {

@@ -16,7 +16,9 @@ export class TransactionsComponent implements OnInit {
   ngOnInit() {
     // api klic za dobit vse transakcije
     this.bankingService.getTransactions()
-      .subscribe(transactions => this.transactions = transactions);
+      .subscribe(transactions => this.transactions = transactions
+        .sort((a, b) => b.timestamp - a.timestamp)    // descending sortiranje
+      );
   }
 
 }

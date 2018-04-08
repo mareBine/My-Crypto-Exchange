@@ -1,7 +1,7 @@
 <div>
   <ul class="transaction">
     <li *ngFor="let trans of transactions">
-      <span class="date">{{ trans.timestamp | date:'yyyy-MM-dd HH:mm:ss'}}</span>
+      <span class="date">{{ trans.timestamp | date:'yyyy-MM-dd HH:mm:ss' }}</span>
       <span class="amount">{{ trans.amount | currency: 'EUR' }}</span>
     </li>
   </ul>
