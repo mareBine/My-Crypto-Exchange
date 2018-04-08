@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, Input, EventEmitter } from '@angular/core';
 import {BankingService} from '../banking.service';
 
 @Component({
@@ -7,6 +7,8 @@ import {BankingService} from '../banking.service';
   styleUrls: ['./account.component.css']
 })
 export class AccountComponent implements OnInit {
+
+  // @Input() newAmount = new EventEmitter<string>();
 
   account = {};
 
@@ -25,7 +27,7 @@ export class AccountComponent implements OnInit {
   processAccount(data): void {
     this.account = {
       timestamp: Date.now(),
-      amount: data.map(e => parseFloat(e.amount)).reduce((a, b) => a + b, 0)
+      amount: data.map(e => parseFloat(e.amount || 0)).reduce((a, b) => a + b, 0)    // sešteje vse transakcije
     };
   }
 

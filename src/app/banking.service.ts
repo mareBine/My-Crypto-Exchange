@@ -10,7 +10,7 @@ const httpOptions = {
 @Injectable()
 export class BankingService {
 
-  private apiUrl = 'http://localhost:3000';  // URL to web api
+  private apiUrl = 'http://localhost:3000';  // URL za json-server api
 
   constructor(private http: HttpClient) {
   }
