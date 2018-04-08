@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import {BankingService} from '../banking.service';
 
 @Component({
   selector: 'app-account',
@@ -7,17 +8,25 @@ import { Component, OnInit } from '@angular/core';
 })
 export class AccountComponent implements OnInit {
 
-  account = {
-    id: 1,
-    amount: 5000
-  };
+  account = {};
 
-  constructor() { }
+  constructor(private bankingService: BankingService) { }
 
   ngOnInit() {
-    // TODO: gre po podatke o stanju na računu / izračuna iz transakcij:
-    // TODO: getInitialBalance(accId) + getTransactions(accId)
-    // account.amount = 4500;
+    // gre po podatke o stanju na računu
+    this.bankingService.getTransactions()
+      .subscribe(response => this.processAccount(response));
+  }
+
+  /**
+   * iz vseh transakcij izračuna stanje
+   * @param data
+   */
+  processAccount(data): void {
+    this.account = {
+      timestamp: Date.now(),
+      amount: data.map(e => parseFloat(e.amount)).reduce((a, b) => a + b, 0)
+    };
   }
 
 }

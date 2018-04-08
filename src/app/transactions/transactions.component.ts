@@ -1,4 +1,5 @@
-import { Component, OnInit } from '@angular/core';
+import {Component, OnInit} from '@angular/core';
+import {BankingService} from '../banking.service';
 
 @Component({
   selector: 'app-transactions',
@@ -7,11 +8,15 @@ import { Component, OnInit } from '@angular/core';
 })
 export class TransactionsComponent implements OnInit {
 
-  constructor() { }
+  transactions = [];
+
+  constructor(private bankingService: BankingService) {
+  }
 
   ngOnInit() {
-    // TODO: api klic za dobit vse transakcije
-    // getTransactions(accId)
+    // api klic za dobit vse transakcije
+    this.bankingService.getTransactions()
+      .subscribe(transactions => this.transactions = transactions);
   }
 
 }
