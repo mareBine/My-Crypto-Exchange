@@ -1,10 +1,16 @@
 <div>
-    <h2>Account balance ({{ account.timestamp | date:'yyyy-MM-dd HH:mm:ss'}})</h2>
-    <h1>{{ account.amount | currency: 'EUR' }}</h1>
+  <h2>Account balance ({{ account.timestamp | date:'yyyy-MM-dd HH:mm:ss'}})</h2>
 
-    <hr>
+  <div *ngIf="account.amounts">
+    <h3 *ngFor="let curr of currencies"
+        [ngClass]="{ 'negative': account.amounts[curr.currency] < 0 }">
+      {{ account.amounts[curr.currency] | currency:curr.currency }}
+    </h3>
+  </div>
 
-    <app-deposit type="deposit"></app-deposit>
-    <app-deposit type="withdraw"></app-deposit>
+  <hr>
+
+  <app-deposit type="buy"></app-deposit>
+  <app-deposit type="sell"></app-deposit>
 
 </div>

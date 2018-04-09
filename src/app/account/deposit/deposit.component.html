@@ -2,8 +2,7 @@
     <h3></h3>
     <input [(ngModel)]="amount" placeholder="{{ type }} amount">
     <select [(ngModel)]="currency">
-        <option *ngFor="let curr of currencies">{{ curr.currency }}</option>
+      <option *ngFor="let curr of currencies" [attr.selected]="curr.id === 1">{{ curr.currency }}</option>
     </select>
-    currency: {{ currency }}
-    <button (click)="deposit()">{{ type }}</button><!-- deposit(); -->
+  <button (click)="deposit()" ngClass="{{ type }}">{{ type }}</button>
 </div>

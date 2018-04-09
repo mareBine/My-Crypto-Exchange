@@ -5,46 +5,54 @@ import {Observable} from 'rxjs/Observable';
 import {Subject} from "rxjs/Subject";
 
 const httpOptions = {
-    headers: new HttpHeaders({'Content-Type': 'application/json'})
+  headers: new HttpHeaders({'Content-Type': 'application/json'})
 };
+
+type Currency = Array<{ id: number, currency: string }>;
 
 @Injectable()
 export class BankingService {
 
-    private apiUrl = 'http://localhost:3000';  // URL za json-server api
+  private apiUrl = 'http://localhost:3000';  // URL za json-server api
 
-    private _messenger = new Subject();
-    messenger$ = this._messenger.asObservable();
+  private _messenger = new Subject();
+  messenger$ = this._messenger.asObservable();
 
-    sendMessage(message) {
-        this._messenger.next(message);
-    }
+  sendMessage(message) {
+    this._messenger.next(message);
+  }
 
-    constructor(private http: HttpClient) {
-    }
+  constructor(private http: HttpClient) {
+  }
 
-    currencies = [
-        {id: 1, currency: 'EUR'},
-        {id: 2, currency: 'SIT'},
-        {id: 3, currency: 'USD'},
+  /**
+   * vrne vse valute ki so na voljo
+   * @returns {any}
+   */
+  getCurrencies(): Currency {
+    return [
+      {id: 1, currency: 'EUR'},
+      {id: 2, currency: 'JPY'},
+      {id: 3, currency: 'GBP'},
+      {id: 4, currency: 'USD'},
     ];
+  }
 
+  /**
+   * dobi vse transakcije
+   * @returns {Observable<any>}
+   */
+  getTransactions(): Observable<any> {
+    return this.http.get(this.apiUrl + '/transactions');
+  }
 
-    /**
-     * dobi vse transakcije
-     * @returns {Observable<any>}
-     */
-    getTransactions(): Observable<any> {
-        return this.http.get(this.apiUrl + '/transactions');
-    }
-
-    /**
-     * zapiše transakcijo z amountom
-     * @param data
-     * @returns {Observable<any>}
-     */
-    depositAmount(data): Observable<any> {
-        return this.http.post(this.apiUrl + '/transactions', data, httpOptions);
-    }
+  /**
+   * zapiše transakcijo z amountom
+   * @param data
+   * @returns {Observable<any>}
+   */
+  depositAmount(data): Observable<any> {
+    return this.http.post(this.apiUrl + '/transactions', data, httpOptions);
+  }
 
 }

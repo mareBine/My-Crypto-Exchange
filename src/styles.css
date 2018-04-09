@@ -4,10 +4,21 @@ h1 {
   font-family: Arial, Helvetica, sans-serif;
   font-size: 250%;
 }
-h2, h3 {
+
+h2 {
   color: #444;
   font-family: Arial, Helvetica, sans-serif;
   font-weight: lighter;
+}
+
+h3 {
+
+  font-family: Arial, Helvetica, sans-serif;
+  font-size: 150%;
+}
+
+.negative {
+  color: #ff4949;
 }
 body {
   margin: 2em;
@@ -20,7 +31,8 @@ a {
   cursor: pointer;
   cursor: hand;
 }
-button, input {
+
+button, input, select {
   font-family: Arial;
   background-color: #eee;
   border: 2px #eee solid;
@@ -47,6 +59,14 @@ button:disabled {
   background-color: #eee;
   color: #aaa;
   cursor: auto;
+}
+
+button.buy {
+  border-color: green;
+}
+
+button.sell {
+  border-color: red;
 }
 
 /* Navigation link styles */

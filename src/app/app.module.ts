@@ -10,7 +10,8 @@ import {TransactionsComponent} from './transactions/transactions.component';
 import {AppRoutingModule} from './app-routing.module';
 
 import {BankingService} from './banking.service';
-import {MessagingService} from "./messaging.service";
+
+// import {MessagingService} from "./messaging.service";
 
 @NgModule({
     declarations: [
@@ -25,7 +26,7 @@ import {MessagingService} from "./messaging.service";
         AppRoutingModule,
         HttpClientModule
     ],
-    providers: [BankingService, MessagingService],
+  providers: [BankingService],
     bootstrap: [AppComponent]
 })
 export class AppModule {
