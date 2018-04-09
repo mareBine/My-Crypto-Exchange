@@ -1,5 +1,6 @@
 import {Component, OnInit} from '@angular/core';
 import {BankingService} from '../banking.service';
+import {Subscription} from "rxjs/Subscription";
 
 @Component({
   selector: 'app-transactions',
@@ -9,6 +10,7 @@ import {BankingService} from '../banking.service';
 export class TransactionsComponent implements OnInit {
 
   transactions = [];
+  obsSubs: Subscription;
 
   constructor(private bankingService: BankingService) {
   }
@@ -20,6 +22,10 @@ export class TransactionsComponent implements OnInit {
         .sort((a, b) => b.timestamp - a.timestamp)    // descending sortiranje
 
       );
+  }
+
+  ngOnDestroy() {
+    this.obsSubs.unsubscribe();   // TODO: pri vseh observable dodat čiščenje
   }
 
 }

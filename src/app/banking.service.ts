@@ -8,6 +8,7 @@ const httpOptions = {
   headers: new HttpHeaders({'Content-Type': 'application/json'})
 };
 
+// TODO: premaknit v svoj class
 type Currency = Array<{ id: number, currency: string }>;
 
 @Injectable()
@@ -15,6 +16,7 @@ export class BankingService {
 
   private apiUrl = 'http://localhost:3000';  // URL za json-server api
 
+  // TODO: prestavit v svoj messenger service
   private _messenger = new Subject();
   messenger$ = this._messenger.asObservable();
 
@@ -22,12 +24,14 @@ export class BankingService {
     this._messenger.next(message);
   }
 
+  // /////////////////
+
   constructor(private http: HttpClient) {
   }
 
   /**
    * vrne vse valute ki so na voljo
-   * @returns {any}
+   * @returns {Currency}
    */
   getCurrencies(): Currency {
     return [

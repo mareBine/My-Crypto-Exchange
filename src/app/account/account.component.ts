@@ -9,11 +9,9 @@ import {Subscription} from "rxjs/Subscription";
 })
 export class AccountComponent implements OnInit, OnDestroy {
 
-  // @Input() newAmount = new EventEmitter<string>();
-
   account = {};
   obsSubs: Subscription;
-  currencies: any;
+  currencies: any;    // TODO: dodat zunanji class
 
   constructor(private bankingService: BankingService) {
     bankingService.messenger$
@@ -27,7 +25,7 @@ export class AccountComponent implements OnInit, OnDestroy {
   }
 
   ngOnDestroy() {
-    this.obsSubs.unsubscribe();
+    this.obsSubs.unsubscribe();   // TODO: pri vseh observable dodat čiščenje
   }
 
   /**
@@ -38,9 +36,7 @@ export class AccountComponent implements OnInit, OnDestroy {
   processMessage(message) {
     console.log('processMessage', message);
     if (message === 'refreshAccount') {
-      // setTimeout(() => {
       this.getAccountData();      // osveži podatke
-      // }, 250);
     }
   }
 
@@ -68,15 +64,14 @@ export class AccountComponent implements OnInit, OnDestroy {
   /**
    * sešteje amount pri vseh transakcijah
    * @param data
-   * @return {number}
+   * @return {any}
    */
   calculateAmounts(data): any {
     // return data
     //     .map(e => parseFloat(e.amount || 0))
     //     .reduce((a, b) => a + b, 0);
 
-    // TODO: da zna seštevat po currency
-
+    // UPDATE: sešteva po currency
     const results = {};
     data.forEach(function (o) {
       results[o.currency] = (results[o.currency] || 0) + parseFloat(o.amount);

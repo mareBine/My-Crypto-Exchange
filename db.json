@@ -55,6 +55,76 @@
       "currency": "EUR",
       "type": "buy",
       "id": 9
+    },
+    {
+      "timestamp": 1523303327549,
+      "amount": "4567",
+      "currency": "USD",
+      "type": "buy",
+      "id": 10
+    },
+    {
+      "timestamp": 1523303333365,
+      "amount": "675",
+      "currency": "USD",
+      "type": "buy",
+      "id": 11
+    },
+    {
+      "timestamp": 1523303343887,
+      "amount": -67,
+      "currency": "EUR",
+      "type": "sell",
+      "id": 12
+    },
+    {
+      "timestamp": 1523303349751,
+      "amount": -473,
+      "currency": "EUR",
+      "type": "sell",
+      "id": 13
+    },
+    {
+      "timestamp": 1523303360109,
+      "amount": -2,
+      "currency": "JPY",
+      "type": "sell",
+      "id": 14
+    },
+    {
+      "timestamp": 1523303370246,
+      "amount": "2",
+      "currency": "JPY",
+      "type": "buy",
+      "id": 15
+    },
+    {
+      "timestamp": 1523303377176,
+      "amount": -2,
+      "currency": "GBP",
+      "type": "sell",
+      "id": 16
+    },
+    {
+      "timestamp": 1523303382345,
+      "amount": "45",
+      "currency": "JPY",
+      "type": "buy",
+      "id": 17
+    },
+    {
+      "timestamp": 1523303399213,
+      "amount": -56.77,
+      "currency": "GBP",
+      "type": "sell",
+      "id": 18
+    },
+    {
+      "timestamp": 1523303990590,
+      "amount": "23",
+      "currency": "EUR",
+      "type": "buy",
+      "id": 19
     }
   ]
 }
