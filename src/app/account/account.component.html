@@ -1,10 +1,10 @@
 <div>
-  <h2>Account balance ({{ account.timestamp | date:'yyyy-MM-dd HH:mm:ss'}})</h2>
-  <h1>{{ account.amount | currency : "EUR" }}</h1>
+    <h2>Account balance ({{ account.timestamp | date:'yyyy-MM-dd HH:mm:ss'}})</h2>
+    <h1>{{ account.amount | currency: 'EUR' }}</h1>
 
-  <hr>
+    <hr>
 
-  <app-deposit type="deposit"></app-deposit>
-  <app-deposit type="withdraw"></app-deposit>
+    <app-deposit type="deposit"></app-deposit>
+    <app-deposit type="withdraw"></app-deposit>
 
 </div>

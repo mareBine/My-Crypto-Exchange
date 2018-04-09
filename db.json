@@ -1,97 +1,42 @@
 {
   "transactions": [
     {
-      "timestamp": 1523214549061,
-      "amount": "100",
+      "timestamp": 1523282883919,
+      "amount": "23",
+      "currency": "SIT",
       "id": 1
     },
     {
-      "timestamp": 1523214551476,
-      "amount": -90,
+      "timestamp": 1523282895179,
+      "amount": "232",
+      "currency": "SIT",
       "id": 2
     },
     {
-      "timestamp": 1523216559227,
-      "amount": "230",
+      "timestamp": 1523282899484,
+      "amount": "234",
+      "currency": "USD",
       "id": 3
     },
     {
-      "timestamp": 1523216630117,
-      "amount": "540",
+      "timestamp": 1523282917710,
+      "amount": "3424",
+      "currency": "EUR",
       "id": 4
     },
     {
-      "timestamp": 1523216662321,
-      "amount": -79.9,
+      "timestamp": 1523283016762,
+      "amount": "34",
+      "currency": "EUR",
+      "type": "deposit",
       "id": 5
     },
     {
-      "timestamp": 1523216703102,
-      "amount": "4.56",
+      "timestamp": 1523283019494,
+      "amount": "5435",
+      "currency": "SIT",
+      "type": "withdraw",
       "id": 6
-    },
-    {
-      "timestamp": 1523216993374,
-      "amount": "45",
-      "id": 7
-    },
-    {
-      "timestamp": 1523217883991,
-      "amount": "342",
-      "id": 8
-    },
-    {
-      "timestamp": 1523217987755,
-      "amount": -120,
-      "id": 9
-    },
-    {
-      "timestamp": 1523218247889,
-      "amount": "3434",
-      "id": 10
-    },
-    {
-      "timestamp": 1523218272612,
-      "amount": "132",
-      "id": 11
-    },
-    {
-      "timestamp": 1523218274140,
-      "amount": null,
-      "id": 12
-    },
-    {
-      "timestamp": 1523218651499,
-      "id": 13
-    },
-    {
-      "timestamp": 1523218721617,
-      "amount": -13403,
-      "id": 14
-    },
-    {
-      "timestamp": 1523218732376,
-      "amount": "12345",
-      "id": 15
-    },
-    {
-      "timestamp": 1523218971013,
-      "amount": "0.56",
-      "id": 16
-    },
-    {
-      "timestamp": 1523219006525,
-      "amount": -456.555,
-      "id": 17
-    },
-    {
-      "timestamp": 1523219747766,
-      "amount": "124",
-      "id": 18
     }
-  ],
-  "balance": {
-    "timestamp": "12131345",
-    "amount": 1999
-  }
+  ]
 }

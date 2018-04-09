@@ -1,5 +1,9 @@
 <div>
-  <h3></h3>
-  <input [(ngModel)]="amount" placeholder="{{ type }} amount">
-  <button (click)="deposit()">{{ type }}</button>
+    <h3></h3>
+    <input [(ngModel)]="amount" placeholder="{{ type }} amount">
+    <select [(ngModel)]="currency">
+        <option *ngFor="let curr of currencies">{{ curr.currency }}</option>
+    </select>
+    currency: {{ currency }}
+    <button (click)="deposit()">{{ type }}</button><!-- deposit(); -->
 </div>
