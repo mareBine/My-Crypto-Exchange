@@ -6,66 +6,9 @@
       "currency": "EUR",
       "type": "buy",
       "id": 1
-    },
-    {
-      "timestamp": 1523452306760,
-      "amount": -5646.41,
-      "currency": "EUR",
-      "type": "sell",
-      "id": 2
-    },
-    {
-      "timestamp": 1523452317587,
-      "amount": -347.9,
-      "currency": "EUR",
-      "type": "sell",
-      "id": 3
-    },
-    {
-      "timestamp": 1523454118210,
-      "amount": -650.48,
-      "currency": "EUR",
-      "type": "sell",
-      "id": 4
-    },
-    {
-      "timestamp": 1523454119765,
-      "amount": 1044.48,
-      "currency": "EUR",
-      "type": "buy",
-      "id": 5
     }
   ],
-  "crypto_transactions": [
-    {
-      "timestamp": 1523452306733,
-      "amount": "1",
-      "currency": "BTC",
-      "type": "buy",
-      "id": 1
-    },
-    {
-      "timestamp": 1523452317578,
-      "amount": "1",
-      "currency": "ETH",
-      "type": "buy",
-      "id": 2
-    },
-    {
-      "timestamp": 1523454118200,
-      "amount": "2",
-      "currency": "ETH",
-      "type": "buy",
-      "id": 3
-    },
-    {
-      "timestamp": 1523454119760,
-      "amount": -3,
-      "currency": "ETH",
-      "type": "sell",
-      "id": 4
-    }
-  ],
+  "crypto_transactions": [],
   "exchange_rates": [
     {
       "timestamp": 1523302462537,
