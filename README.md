@@ -10,13 +10,15 @@ calls.
 
 ## Running
 
-1. Install Angular CLI: `npm i -g @angular/cli`
+1. Pull repository and run `npm install`
 
-2. Install JSON Server: `npm i -g json-server`
+2. Install Angular CLI: `npm i -g @angular/cli`
 
-3. Run json server in project root folder: `json-server --watch db.json`
+3. Install JSON Server: `npm i -g json-server`
 
-4. Run development server: `ng serve`. Navigate to `http://localhost:4200/` for app and
+4. Run json server in project root folder: `json-server --watch db.json`
+
+5. Run development server: `ng serve`. Navigate to `http://localhost:4200/` for app and
 `http://localhost:3000/` if you like to see json-server output. The app will automatically reload if you change any of the source files.
 
 ## Build
