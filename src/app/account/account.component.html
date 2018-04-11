@@ -1,7 +1,6 @@
 <div>
   <!-- account balance -->
-  <h2>Account balance</h2>
-  <h3>{{ moneyAccount.timestamp | date:'yyyy-MM-dd HH:mm:ss'}}</h3>
+  <h2>Account balance, {{ moneyAccount.timestamp | date:'yyyy-MM-dd HH:mm:ss'}}</h2>
   <h1 *ngIf="moneyAccount.amounts">
     {{ moneyAccount.amounts[localCurrency[0].currency] | currency:localCurrency[0].currency }}
   </h1>
@@ -11,8 +10,7 @@
     <table class="crypto">
       <thead>
       <th>crypto</th>
-      <th class="right">rate (last refresh: <span *ngIf="cryptoCurrencies">{{ cryptoCurrencies[0].timestamp | date:'HH:mm:ss' }})</span>
-      </th>
+      <th class="right">rate ({{ interval / 1000 }}s refresh)</th>
       <th class="right">value in {{ localCurrency[0].currency }}</th>
       </thead>
       <tbody>

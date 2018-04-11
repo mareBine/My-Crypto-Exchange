@@ -2,6 +2,7 @@ import {Component, Input, OnChanges, OnDestroy, OnInit} from '@angular/core';
 import {BankingService} from '../../banking.service';
 import {Subscription} from 'rxjs/Subscription';
 import {MessagingService} from '../../messaging.service';
+import {Currency, ExchangeRate} from "../../custom-types";
 
 @Component({
   selector: 'app-deposit',
@@ -12,17 +13,17 @@ export class DepositComponent implements OnInit, OnChanges, OnDestroy {
 
   @Input() type: string;
   @Input() moneyAmount: number;
-  @Input() cryptoAmounts: any;      // TODO: dodat type
-  @Input() exchangeRates: any;      // TODO: dodat type
-  // TODO: boljša rešitev z observables, da se tukaj naročiš na tistega iz account.component
+  @Input() cryptoAmounts: any;
+  @Input() exchangeRates: ExchangeRate[];
 
+  // TODO: boljša rešitev kot @Input lahko z observables, da se naročiš na tistega iz account.component
   // subExchRates: Subscription;
 
   amount: number;
   cryptoCurrency: string;
-  localCurrency: any;
+  localCurrency: Currency[];
   subExchRates: Subscription;
-  exchangeRatesCopy: any;
+  exchangeRatesCopy: ExchangeRate[];
 
   constructor(private bankingService: BankingService, private messagingService: MessagingService) {
   }
@@ -30,7 +31,7 @@ export class DepositComponent implements OnInit, OnChanges, OnDestroy {
   ngOnInit() {
     this.localCurrency = this.bankingService.getLocalCurrency();
 
-    // nabor valut prebere samo v prvič
+    // TODO: boljša rešitev lahko z observables, da se naročiš na tistega iz account.component
     this.subExchRates = this.bankingService.getExchangeRates()
       .subscribe(excrates => {
         this.exchangeRatesCopy = excrates;
@@ -39,7 +40,6 @@ export class DepositComponent implements OnInit, OnChanges, OnDestroy {
   }
 
   ngOnChanges() {
-    console.log('deposit.ngOnChanges', this.exchangeRates);
   }
 
   ngOnDestroy() {
@@ -51,7 +51,7 @@ export class DepositComponent implements OnInit, OnChanges, OnDestroy {
    * 2. bremeni/poveča kripto valuto
    * 3. poveča/bremeni money account
    */
-  deposit(): void {
+  deposit() {
     if (this.checkAmount(this.type)) {
       this.bankingService.placeCryptoTrans({
         timestamp: Date.now(),
@@ -67,7 +67,6 @@ export class DepositComponent implements OnInit, OnChanges, OnDestroy {
         }).subscribe(() => {
           this.amount = null;
           // osvežitev podatkov na parentu / messaging
-          console.log('afterDeposit refreshAccount');
           this.messagingService.sendMessage('refreshAccount');
         });
       });

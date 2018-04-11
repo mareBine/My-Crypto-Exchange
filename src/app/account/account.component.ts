@@ -1,9 +1,10 @@
 import {Component, OnDestroy, OnInit} from '@angular/core';
 import {BankingService} from '../banking.service';
 import {Subscription} from 'rxjs/Subscription';
-import {TimerObservable} from "rxjs/observable/TimerObservable";
-import "rxjs/add/operator/takeWhile";
-import {MessagingService} from "../messaging.service";
+import {TimerObservable} from 'rxjs/observable/TimerObservable';
+import 'rxjs/add/operator/takeWhile';
+import {MessagingService} from '../messaging.service';
+import {Account, Currency, ExchangeRate} from '../custom-types';
 
 @Component({
   selector: 'app-account',
@@ -12,24 +13,25 @@ import {MessagingService} from "../messaging.service";
 })
 export class AccountComponent implements OnInit, OnDestroy {
 
-  private alive: boolean; // used to unsubscribe from the TimerObservable
-  // when OnDestroy is called.
-  private interval: number;
+  private alive: boolean; // unsubscribe from TimerObservable
+  interval: number;
 
-  moneyAccount = {};
-  cryptoAccount = {};
-
+  moneyAccount: Account = {
+    timestamp: 0, amounts: {}
+  };
+  cryptoAccount: Account = {
+    timestamp: 0, amounts: {}
+  };
   subMoneyTrans: Subscription;
   subCryptoTrans: Subscription;
   subExchRates: Subscription;
-
-  localCurrency: any;
-  cryptoCurrencies: any;    // TODO: dodat zunanji class
+  localCurrency: Currency[];
+  cryptoCurrencies: ExchangeRate[];    // TODO: dodat zunanji class
 
   constructor(private bankingService: BankingService, private messagingService: MessagingService) {
     this.alive = true;
-    this.interval = 5000;
-    messagingService.messenger$
+    this.interval = 5000;   // refresh interval za rate polling
+    messagingService.getMessage()
       .subscribe(response => this.processMessage(response));
   }
 
@@ -42,27 +44,24 @@ export class AccountComponent implements OnInit, OnDestroy {
       .subscribe(() => {
         this.getExchangeRates();
       });
-
-    this.getCryptoAccountData();
-    this.getMoneyAccountData();
   }
 
   ngOnDestroy() {
     this.subExchRates.unsubscribe();
     this.subCryptoTrans.unsubscribe();
     this.subMoneyTrans.unsubscribe();
-    this.alive = false; // switches your TimerObservable off
+    this.alive = false; // ugasne TimerObservable
   }
 
   /**
-   *
+   * osveži podatke
    * @param message
    */
   processMessage(message) {
-    console.log('processMessage', message);
+    // console.log('processMessage', message);
     if (message === 'refreshAccount') {
-      this.getMoneyAccountData();      // osveži podatke
-      this.getCryptoAccountData();      // osveži podatke
+      this.getMoneyAccountData();
+      this.getCryptoAccountData();
     }
   }
 
@@ -74,6 +73,8 @@ export class AccountComponent implements OnInit, OnDestroy {
       .subscribe(response => {
         this.cryptoCurrencies = this.bankingService.randomizeRates(response);
         // console.log('getExchangeRates', JSON.stringify(this.cryptoCurrencies));
+        this.getCryptoAccountData();
+        this.getMoneyAccountData();
       });
   }
 
@@ -83,7 +84,7 @@ export class AccountComponent implements OnInit, OnDestroy {
   getCryptoAccountData() {
     this.subCryptoTrans = this.bankingService.getCryptoTransactions()
       .subscribe(response => {
-        console.log('getCryptoAccountData', response.length);
+        // console.log('getCryptoAccountData', response.length);
         this.cryptoAccount = {
           timestamp: Date.now(),
           amounts: this.calculateAmounts(response)
@@ -97,7 +98,7 @@ export class AccountComponent implements OnInit, OnDestroy {
   getMoneyAccountData() {
     this.subMoneyTrans = this.bankingService.getMoneyTransactions()
       .subscribe(response => {
-        console.log('getMoneyAccountData', response.length);
+        // console.log('getMoneyAccountData', response.length);
         this.moneyAccount = {
           timestamp: Date.now(),
           amounts: this.calculateAmounts(response)
@@ -112,10 +113,11 @@ export class AccountComponent implements OnInit, OnDestroy {
    */
   calculateAmounts(data): any {
     const results = {};
+    this.cryptoCurrencies.forEach(o => results[o.from] = 0);
     data.forEach(function (o) {
       results[o.currency] = (results[o.currency] || 0) + parseFloat(o.amount || 0);
     });
-    console.log('calculateAmounts', results);
+    // console.log('calculateAmounts', results);
     return results;
   }
 

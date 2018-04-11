@@ -12,15 +12,16 @@ export class TransactionsComponent implements OnInit, OnDestroy {
 
   @Input() type: string;
 
+  // sub: Subscription;
+  private obsSubs: Subscription;
+
   transactions = [];
-  //sub: Subscription;
-  obsSubs: Subscription;
 
   constructor(private bankingService: BankingService, private route: ActivatedRoute) {
   }
 
   ngOnInit() {
-    // subscription na route parameter
+    // VARIANTA: subscription na route parameter
     // this.sub = this.route.params.subscribe(params => this.type = params['type']);
     if (this.type === 'money') {
       this.obsSubs = this.bankingService.getMoneyTransactions()
@@ -29,7 +30,6 @@ export class TransactionsComponent implements OnInit, OnDestroy {
       this.obsSubs = this.bankingService.getCryptoTransactions()
         .subscribe(transactions => this.transactions = transactions.sort((a, b) => b.timestamp - a.timestamp));
     }
-
   }
 
   ngOnDestroy() {

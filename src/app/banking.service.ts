@@ -2,31 +2,40 @@ import {Injectable} from '@angular/core';
 import {HttpClient, HttpHeaders} from '@angular/common/http';
 
 import {Observable} from 'rxjs/Observable';
+import {Currency, ExchangeRate, Transaction} from "./custom-types";
+import {catchError} from "rxjs/operators";
+import {of} from "rxjs/observable/of";
 
 const httpOptions = {
   headers: new HttpHeaders({'Content-Type': 'application/json'})
 };
 
-// TODO: premaknit v svoj class
-type Currency = Array<{ id: number, currency: string }>;
-
 @Injectable()
 export class BankingService {
 
+  constructor(private http: HttpClient) {
+  }
+
   private apiUrl = 'http://localhost:3000';  // URL za json-server api
 
-
-
-  // /////////////////
-
-  constructor(private http: HttpClient) {
+  /**
+   * api error handler
+   * @param {string} operation
+   * @param {T} result
+   * @returns {(error: any) => Observable<T>}
+   */
+  private handleError<T>(operation = 'operation', result?: T) {
+    return (error: any): Observable<T> => {
+      console.error(error);
+      return of(result as T);
+    };
   }
 
   /**
    * lokalna valuta, zaenkrat samo EUR
    * @return {string}
    */
-  getLocalCurrency(): Currency {
+  getLocalCurrency(): Currency[] {
     return [
       {id: 1, currency: 'EUR'}
     ];
@@ -34,47 +43,57 @@ export class BankingService {
 
   /**
    * dobi vse crypto transakcije
-   * @returns {Observable<any>}
+   * @returns {Observable<Transaction[]>}
    */
-  getCryptoTransactions(): Observable<any> {
-    return this.http.get(this.apiUrl + '/crypto_transactions');
+  getCryptoTransactions(): Observable<Transaction[]> {
+    return this.http.get<Transaction[]>(this.apiUrl + '/crypto_transactions')
+      .pipe(catchError(this.handleError('getCryptoTransactions', [])));
   }
 
   /**
    * dobi vse money transakcije (EUR)
-   * @returns {Observable<any>}
+   * @returns {Observable<Transaction[]>}
    */
-  getMoneyTransactions(): Observable<any> {
-    return this.http.get(this.apiUrl + '/money_transactions');
+  getMoneyTransactions(): Observable<Transaction[]> {
+    return this.http.get<Transaction[]>(this.apiUrl + '/money_transactions')
+      .pipe(catchError(this.handleError('getMoneyTransactions', [])));
   }
 
   /**
-   * dobi vse money transakcije (EUR)
-   * @returns {Observable<any>}
+   * dobi vse exchange rate
+   * @returns {Observable<ExchangeRate[]>}
    */
-  getExchangeRates(): Observable<any> {
-    return this.http.get(this.apiUrl + '/exchange_rates');
+  getExchangeRates(): Observable<ExchangeRate[]> {
+    return this.http.get<ExchangeRate[]>(this.apiUrl + '/exchange_rates')
+      .pipe(catchError(this.handleError('getExchangeRates', [])));
   }
 
   /**
-   * zapiše transakcijo z amountom
+   * zapiše crypto transakcijo
    * @param data
-   * @returns {Observable<any>}
+   * @returns {Observable<Transaction[]>}
    */
-  placeCryptoTrans(data): Observable<any> {
-    return this.http.post(this.apiUrl + '/crypto_transactions', data, httpOptions);
-  }
-
-  placeMoneyTrans(data): Observable<any> {
-    return this.http.post(this.apiUrl + '/money_transactions', data, httpOptions);
+  placeCryptoTrans(data): Observable<Transaction[]> {
+    return this.http.post<Transaction[]>(this.apiUrl + '/crypto_transactions', data, httpOptions)
+      .pipe(catchError(this.handleError('placeCryptoTrans', [])));
   }
 
   /**
-   * da ob vsakem klicu randomizira exchange rate
+   * zapiše money transakcijo
    * @param data
-   * @return {any}
+   * @returns {Observable<Transaction[]>}
    */
-  randomizeRates(data): any {
+  placeMoneyTrans(data): Observable<Transaction[]> {
+    return this.http.post<Transaction[]>(this.apiUrl + '/money_transactions', data, httpOptions)
+      .pipe(catchError(this.handleError('placeMoneyTrans', [])));
+  }
+
+  /**
+   * randomizira exchange rate
+   * @param data
+   * @return {ExchangeRate[]}
+   */
+  randomizeRates(data): ExchangeRate[] {
     // factor je iz random intervala -0.05 do +0.05
     const factor = (Math.random() - 0.5) / 10;
     data.forEach(o => {
@@ -82,7 +101,7 @@ export class BankingService {
       o.rate = Math.round((tmp + (factor * tmp)) * 100) / 100;
       o.timestamp = Date.now();
     });
-    //console.log('randomizeRates', JSON.stringify(data));
+    // console.log('randomizeRates', JSON.stringify(data));
     return data;
   }
 
