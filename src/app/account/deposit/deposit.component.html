@@ -1,8 +1,9 @@
-<div>
-    <h3></h3>
-    <input [(ngModel)]="amount" placeholder="{{ type }} amount">
-    <select [(ngModel)]="currency">
-      <option *ngFor="let curr of currencies" [attr.selected]="curr.id === 1">{{ curr.currency }}</option>
-    </select>
+<div *ngIf="exchangeRates">
+  <h3></h3>
+  <input [(ngModel)]="amount" placeholder="{{ type }} crypto amount">
+  <select [(ngModel)]="cryptoCurrency">
+    <option *ngFor="let curr of exchangeRatesCopy">{{ curr.from }}</option>
+  </select>
+
   <button (click)="deposit()" ngClass="{{ type }}">{{ type }}</button>
 </div>

@@ -2,7 +2,6 @@ import {Injectable} from '@angular/core';
 import {HttpClient, HttpHeaders} from '@angular/common/http';
 
 import {Observable} from 'rxjs/Observable';
-import {Subject} from "rxjs/Subject";
 
 const httpOptions = {
   headers: new HttpHeaders({'Content-Type': 'application/json'})
@@ -16,13 +15,7 @@ export class BankingService {
 
   private apiUrl = 'http://localhost:3000';  // URL za json-server api
 
-  // TODO: prestavit v svoj messenger service
-  private _messenger = new Subject();
-  messenger$ = this._messenger.asObservable();
 
-  sendMessage(message) {
-    this._messenger.next(message);
-  }
 
   // /////////////////
 
@@ -30,24 +23,37 @@ export class BankingService {
   }
 
   /**
-   * vrne vse valute ki so na voljo
-   * @returns {Currency}
+   * lokalna valuta, zaenkrat samo EUR
+   * @return {string}
    */
-  getCurrencies(): Currency {
+  getLocalCurrency(): Currency {
     return [
-      {id: 1, currency: 'EUR'},
-      {id: 2, currency: 'JPY'},
-      {id: 3, currency: 'GBP'},
-      {id: 4, currency: 'USD'},
+      {id: 1, currency: 'EUR'}
     ];
   }
 
   /**
-   * dobi vse transakcije
+   * dobi vse crypto transakcije
    * @returns {Observable<any>}
    */
-  getTransactions(): Observable<any> {
-    return this.http.get(this.apiUrl + '/transactions');
+  getCryptoTransactions(): Observable<any> {
+    return this.http.get(this.apiUrl + '/crypto_transactions');
+  }
+
+  /**
+   * dobi vse money transakcije (EUR)
+   * @returns {Observable<any>}
+   */
+  getMoneyTransactions(): Observable<any> {
+    return this.http.get(this.apiUrl + '/money_transactions');
+  }
+
+  /**
+   * dobi vse money transakcije (EUR)
+   * @returns {Observable<any>}
+   */
+  getExchangeRates(): Observable<any> {
+    return this.http.get(this.apiUrl + '/exchange_rates');
   }
 
   /**
@@ -55,8 +61,29 @@ export class BankingService {
    * @param data
    * @returns {Observable<any>}
    */
-  depositAmount(data): Observable<any> {
-    return this.http.post(this.apiUrl + '/transactions', data, httpOptions);
+  placeCryptoTrans(data): Observable<any> {
+    return this.http.post(this.apiUrl + '/crypto_transactions', data, httpOptions);
+  }
+
+  placeMoneyTrans(data): Observable<any> {
+    return this.http.post(this.apiUrl + '/money_transactions', data, httpOptions);
+  }
+
+  /**
+   * da ob vsakem klicu randomizira exchange rate
+   * @param data
+   * @return {any}
+   */
+  randomizeRates(data): any {
+    // factor je iz random intervala -0.05 do +0.05
+    const factor = (Math.random() - 0.5) / 10;
+    data.forEach(o => {
+      const tmp = o.rate;
+      o.rate = Math.round((tmp + (factor * tmp)) * 100) / 100;
+      o.timestamp = Date.now();
+    });
+    //console.log('randomizeRates', JSON.stringify(data));
+    return data;
   }
 
 }

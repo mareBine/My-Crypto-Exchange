@@ -1,16 +1,49 @@
 <div>
-  <h2>Account balance ({{ account.timestamp | date:'yyyy-MM-dd HH:mm:ss'}})</h2>
+  <!-- account balance -->
+  <h2>Account balance</h2>
+  <h3>{{ moneyAccount.timestamp | date:'yyyy-MM-dd HH:mm:ss'}}</h3>
+  <h1 *ngIf="moneyAccount.amounts">
+    {{ moneyAccount.amounts[localCurrency[0].currency] | currency:localCurrency[0].currency }}
+  </h1>
 
-  <div *ngIf="account.amounts">
-    <h3 *ngFor="let curr of currencies"
-        [ngClass]="{ 'negative': account.amounts[curr.currency] < 0 }">
-      {{ account.amounts[curr.currency] | currency:curr.currency }}
-    </h3>
+  <!-- crypto portfolio -->
+  <div *ngIf="cryptoAccount.amounts">
+    <table class="crypto">
+      <thead>
+      <th>crypto</th>
+      <th class="right">rate (last refresh: <span *ngIf="cryptoCurrencies">{{ cryptoCurrencies[0].timestamp | date:'HH:mm:ss' }})</span>
+      </th>
+      <th class="right">value in {{ localCurrency[0].currency }}</th>
+      </thead>
+      <tbody>
+      <tr *ngFor="let curr of cryptoCurrencies">
+        <td>{{ cryptoAccount.amounts[curr.from] | currency:curr.from }}</td>
+        <td class="right">{{ curr.rate }}</td>
+        <td class="right">{{ cryptoAccount.amounts[curr.from] * curr.rate | currency:curr.to }}</td>
+      </tr>
+      <!-- TODO: dodat še total -->
+      <!--<tr>-->
+      <!--<td></td>-->
+      <!--<td class="total right">TOTAL</td>-->
+      <!--<td class="right">&lt;!&ndash;{{ sumAmounts(cryptoAccount.amounts) | currency:localCurrency[0].currency }}&ndash;&gt;</td>-->
+      <!--</tr>-->
+      </tbody>
+    </table>
   </div>
 
   <hr>
 
-  <app-deposit type="buy"></app-deposit>
-  <app-deposit type="sell"></app-deposit>
-
+  <!-- buy or sell crypto currencies -->
+  <div *ngIf="moneyAccount.amounts">
+    <app-deposit
+      type="buy"
+      [moneyAmount]="moneyAccount.amounts[localCurrency[0].currency]"
+      [cryptoAmounts]="cryptoAccount.amounts"
+      [exchangeRates]="cryptoCurrencies"></app-deposit>
+    <app-deposit
+      type="sell"
+      [moneyAmount]="moneyAccount.amounts[localCurrency[0].currency]"
+      [cryptoAmounts]="cryptoAccount.amounts"
+      [exchangeRates]="cryptoCurrencies"></app-deposit>
+  </div>
 </div>

@@ -1,14 +1,15 @@
-import { NgModule } from '@angular/core';
-import { RouterModule, Routes } from '@angular/router';
-import { CommonModule } from '@angular/common';
+import {NgModule} from '@angular/core';
+import {RouterModule, Routes} from '@angular/router';
+import {CommonModule} from '@angular/common';
 
-import { TransactionsComponent } from './transactions/transactions.component';
-import { AccountComponent } from './account/account.component';
+import {AccountComponent} from './account/account.component';
+import {TransacgroupComponent} from './transacgroup/transacgroup.component';
 
 const routes: Routes = [
-  { path: '', redirectTo: '/account', pathMatch: 'full' },
-  { path: 'transactions', component: TransactionsComponent },
-  { path: 'account', component: AccountComponent }
+  {path: '', redirectTo: '/account', pathMatch: 'full'},
+  {path: 'transactions', component: TransacgroupComponent},
+  // { path: 'transactions/:type', component: TransactionsComponent },
+  {path: 'account', component: AccountComponent}
 ];
 
 @NgModule({
@@ -16,7 +17,8 @@ const routes: Routes = [
     CommonModule,
     RouterModule.forRoot(routes)
   ],
-  exports: [ RouterModule ],
+  exports: [RouterModule],
   declarations: []
 })
-export class AppRoutingModule { }
+export class AppRoutingModule {
+}

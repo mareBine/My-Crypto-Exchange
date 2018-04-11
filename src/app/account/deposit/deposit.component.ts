@@ -1,51 +1,112 @@
-import {Component, Input, OnInit} from '@angular/core';
+import {Component, Input, OnChanges, OnDestroy, OnInit} from '@angular/core';
 import {BankingService} from '../../banking.service';
+import {Subscription} from 'rxjs/Subscription';
+import {MessagingService} from '../../messaging.service';
 
 @Component({
   selector: 'app-deposit',
   templateUrl: './deposit.component.html',
   styleUrls: ['./deposit.component.css']
 })
-export class DepositComponent implements OnInit {
+export class DepositComponent implements OnInit, OnChanges, OnDestroy {
 
   @Input() type: string;
+  @Input() moneyAmount: number;
+  @Input() cryptoAmounts: any;      // TODO: dodat type
+  @Input() exchangeRates: any;      // TODO: dodat type
+  // TODO: boljša rešitev z observables, da se tukaj naročiš na tistega iz account.component
 
-  // @Output() newAmount = new EventEmitter<string>();
+  // subExchRates: Subscription;
 
   amount: number;
-  currency: string;
-  currencies: any;
+  cryptoCurrency: string;
+  localCurrency: any;
+  subExchRates: Subscription;
+  exchangeRatesCopy: any;
 
-  constructor(private bankingService: BankingService) {
-
+  constructor(private bankingService: BankingService, private messagingService: MessagingService) {
   }
 
   ngOnInit() {
-    this.currencies = this.bankingService.getCurrencies();
-    this.currency = this.currencies[0].currency;
+    this.localCurrency = this.bankingService.getLocalCurrency();
+
+    // nabor valut prebere samo v prvič
+    this.subExchRates = this.bankingService.getExchangeRates()
+      .subscribe(excrates => {
+        this.exchangeRatesCopy = excrates;
+        this.cryptoCurrency = this.exchangeRatesCopy[0].from;    // za select box selected option
+      });
   }
 
+  ngOnChanges() {
+    console.log('deposit.ngOnChanges', this.exchangeRates);
+  }
+
+  ngOnDestroy() {
+    this.subExchRates.unsubscribe();
+  }
+
+  /**
+   * 1. preveri če je možen nakup/prodaja
+   * 2. bremeni/poveča kripto valuto
+   * 3. poveča/bremeni money account
+   */
   deposit(): void {
-    // api klic za deposit
-    if (this.amount > 0) {
-      this.bankingService.depositAmount({
+    if (this.checkAmount(this.type)) {
+      this.bankingService.placeCryptoTrans({
         timestamp: Date.now(),
         amount: this.type === 'sell' ? -this.amount : this.amount,
-        currency: this.currency,
+        currency: this.cryptoCurrency,
         type: this.type     // buy or sell
       }).subscribe(() => {
-        this.amount = null;
-        // TODO: osvežitev podatkov na parentu / emit
-        console.log('afterDeposit refreshAccount');
-        this.bankingService.sendMessage('refreshAccount');
+        this.bankingService.placeMoneyTrans({
+          timestamp: Date.now(),
+          amount: this.calculateMoneyAmount(),
+          currency: this.localCurrency[0].currency,   // izbrana lokalna valuta
+          type: this.type === 'sell' ? 'buy' : 'sell'     // buy or sell
+        }).subscribe(() => {
+          this.amount = null;
+          // osvežitev podatkov na parentu / messaging
+          console.log('afterDeposit refreshAccount');
+          this.messagingService.sendMessage('refreshAccount');
+        });
       });
     }
   }
 
-  // afterDeposit(): any {
-  //   this.amount = null;
-  //   // TODO: osvežitev podatkov na parentu / emit
-  //   console.log('afterDeposit refreshAccount');
-  //   this.bankingService.sendMessage('refreshAccount');
-  // }
+  /**
+   * preveri ali je dovolj denarja za nakup/prodajo
+   * @param {string} operation
+   * @return {boolean}
+   */
+  checkAmount(operation: string): boolean {
+    console.log('checkAmount: exchRate', this.getExchangeRate(), 'moneyAmount', this.moneyAmount, 'crypto', this.cryptoCurrency);
+    if (operation === 'buy') {
+      return (this.amount > 0 && (this.moneyAmount >= (this.amount * this.getExchangeRate())));
+    } else {
+      return (this.amount > 0 && this.amount <= this.cryptoAmounts[this.cryptoCurrency]);
+    }
+  }
+
+  /**
+   * bremenitev money računa
+   * @return {number}
+   */
+  calculateMoneyAmount(): number {
+    const multiply = this.type === 'sell' ? 1 : -1;
+    return multiply * (this.amount * this.getExchangeRate());
+  }
+
+  /**
+   * dobi exchange rate za trenutno kriptovaluto
+   * @return {number}
+   */
+  getExchangeRate(): number {
+    const exchRateArr = this.exchangeRates.filter(o => o.from === this.cryptoCurrency);
+    if (exchRateArr.length > 0 && exchRateArr[0].hasOwnProperty('rate')) {
+      return exchRateArr[0].rate;
+    }
+  }
+
+
 }

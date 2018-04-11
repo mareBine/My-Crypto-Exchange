@@ -1,130 +1,107 @@
 {
-  "transactions": [
+  "money_transactions": [
     {
-      "timestamp": 1523302462537,
-      "amount": "1200",
+      "timestamp": 1523365719173,
+      "amount": "10000",
       "currency": "EUR",
+      "type": "buy",
+      "id": 1
+    },
+    {
+      "timestamp": 1523452306760,
+      "amount": -5646.41,
+      "currency": "EUR",
+      "type": "sell",
+      "id": 2
+    },
+    {
+      "timestamp": 1523452317587,
+      "amount": -347.9,
+      "currency": "EUR",
+      "type": "sell",
+      "id": 3
+    },
+    {
+      "timestamp": 1523454118210,
+      "amount": -650.48,
+      "currency": "EUR",
+      "type": "sell",
+      "id": 4
+    },
+    {
+      "timestamp": 1523454119765,
+      "amount": 1044.48,
+      "currency": "EUR",
+      "type": "buy",
+      "id": 5
+    }
+  ],
+  "crypto_transactions": [
+    {
+      "timestamp": 1523452306733,
+      "amount": "1",
+      "currency": "BTC",
+      "type": "buy",
+      "id": 1
+    },
+    {
+      "timestamp": 1523452317578,
+      "amount": "1",
+      "currency": "ETH",
       "type": "buy",
       "id": 2
     },
     {
-      "timestamp": 1523302470100,
-      "amount": "3400",
-      "currency": "JPY",
+      "timestamp": 1523454118200,
+      "amount": "2",
+      "currency": "ETH",
       "type": "buy",
       "id": 3
     },
     {
-      "timestamp": 1523302477315,
-      "amount": "902",
-      "currency": "GBP",
-      "type": "buy",
+      "timestamp": 1523454119760,
+      "amount": -3,
+      "currency": "ETH",
+      "type": "sell",
       "id": 4
+    }
+  ],
+  "exchange_rates": [
+    {
+      "timestamp": 1523302462537,
+      "from": "BTC",
+      "to": "EUR",
+      "rate": 5536
     },
     {
-      "timestamp": 1523302484746,
-      "amount": -3400,
-      "currency": "EUR",
-      "type": "sell",
-      "id": 5
+      "timestamp": 1523302462537,
+      "from": "ETH",
+      "to": "EUR",
+      "rate": 331.68
     },
     {
-      "timestamp": 1523303083035,
-      "amount": "3400",
-      "currency": "EUR",
-      "type": "buy",
-      "id": 6
+      "timestamp": 1523302462537,
+      "from": "XRP",
+      "to": "EUR",
+      "rate": 0.397312
     },
     {
-      "timestamp": 1523303142930,
-      "amount": -450,
-      "currency": "JPY",
-      "type": "sell",
-      "id": 7
+      "timestamp": 1523302462537,
+      "from": "LTC",
+      "to": "EUR",
+      "rate": 92.7
     },
     {
-      "timestamp": 1523303147920,
-      "amount": -2300,
-      "currency": "JPY",
-      "type": "sell",
-      "id": 8
+      "timestamp": 1523302462537,
+      "from": "EOS",
+      "to": "EUR",
+      "rate": 4.91
     },
     {
-      "timestamp": 1523303192799,
-      "amount": "340",
-      "currency": "EUR",
-      "type": "buy",
-      "id": 9
-    },
-    {
-      "timestamp": 1523303327549,
-      "amount": "4567",
-      "currency": "USD",
-      "type": "buy",
-      "id": 10
-    },
-    {
-      "timestamp": 1523303333365,
-      "amount": "675",
-      "currency": "USD",
-      "type": "buy",
-      "id": 11
-    },
-    {
-      "timestamp": 1523303343887,
-      "amount": -67,
-      "currency": "EUR",
-      "type": "sell",
-      "id": 12
-    },
-    {
-      "timestamp": 1523303349751,
-      "amount": -473,
-      "currency": "EUR",
-      "type": "sell",
-      "id": 13
-    },
-    {
-      "timestamp": 1523303360109,
-      "amount": -2,
-      "currency": "JPY",
-      "type": "sell",
-      "id": 14
-    },
-    {
-      "timestamp": 1523303370246,
-      "amount": "2",
-      "currency": "JPY",
-      "type": "buy",
-      "id": 15
-    },
-    {
-      "timestamp": 1523303377176,
-      "amount": -2,
-      "currency": "GBP",
-      "type": "sell",
-      "id": 16
-    },
-    {
-      "timestamp": 1523303382345,
-      "amount": "45",
-      "currency": "JPY",
-      "type": "buy",
-      "id": 17
-    },
-    {
-      "timestamp": 1523303399213,
-      "amount": -56.77,
-      "currency": "GBP",
-      "type": "sell",
-      "id": 18
-    },
-    {
-      "timestamp": 1523303990590,
-      "amount": "23",
-      "currency": "EUR",
-      "type": "buy",
-      "id": 19
+      "timestamp": 1523302462537,
+      "from": "XGR",
+      "to": "EUR",
+      "rate": 12.34
     }
   ]
 }
